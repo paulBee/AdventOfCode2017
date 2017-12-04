@@ -1,21 +1,17 @@
 package week1
 
+import integerValue
+import wrappedIndex
+
 class CaptchaCalculator {
 
     fun calc (input: String) : Int = input
-            .filterIndexed{index, value -> compareToNext(value, input, index) }
-            .map { charToInt(it) }
+            .filterIndexed{index, value -> value == input.wrappedIndex(index + 1) }
+            .map { it.integerValue() }
             .sum()
 
     fun calc2 (input: String) : Int = input
-            .filterIndexed{index, value -> compareSkipping(value, index, input, input.length/2)}
-            .map { charToInt(it) }
+            .filterIndexed{index, value -> value == input.wrappedIndex(index + input.length/2)}
+            .map { it.integerValue() }
             .sum()
-
-    private fun charToInt(it: Char) = it.toString().toInt()
-
-    private fun compareToNext(value: Char, input: String, index: Int) = compareSkipping(value, index, input, 1);
-
-    private fun compareSkipping(value: Char, currIndex: Int, fullString: String, skipNumber: Int) =
-            value == fullString[(currIndex + skipNumber) % fullString.length]
 }
