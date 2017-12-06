@@ -1,5 +1,7 @@
 package week2
 
+import splitNewline
+import splitWhitespace
 import takeGreater
 import takeLesser
 
@@ -21,8 +23,8 @@ class CheckSumerer {
         })
 
     private fun wrangleSpreadsheet(spreadSheetString: String): List<List<Int>>
-            = spreadSheetString.split("\n")
-            .map { it.split(Regex("\\s+"))
+            = spreadSheetString.splitNewline()
+            .map { it.splitWhitespace()
                     .map { it.trim().toInt() }
             }.filter { it.isNotEmpty() }
 
