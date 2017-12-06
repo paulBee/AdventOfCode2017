@@ -1,4 +1,4 @@
-package week2
+package day2
 
 import splitNewline
 import splitWhitespace

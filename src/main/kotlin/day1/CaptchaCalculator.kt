@@ -1,4 +1,4 @@
-package week1
+package day1
 
 import integerValue
 import wrappedIndex

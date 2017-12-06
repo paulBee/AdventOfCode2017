@@ -1,10 +1,10 @@
-package week4
+package day4
 
 import org.junit.Test
 import org.assertj.core.api.KotlinAssertions.assertThat
 import splitNewline
 
-class week4Tests {
+class Day4Tests {
 
     val validator = PasswordValidator()
 

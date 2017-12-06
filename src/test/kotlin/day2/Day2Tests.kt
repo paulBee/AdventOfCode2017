@@ -1,9 +1,9 @@
-package week2
+package day2
 
 import org.junit.Test
 import org.assertj.core.api.KotlinAssertions.assertThat
 
-class Week2Tests {
+class Day2Tests {
     val checkSummer = CheckSumerer()
 
     @Test

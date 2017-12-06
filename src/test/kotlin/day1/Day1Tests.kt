@@ -1,9 +1,9 @@
-package week1
+package day1
 
 import org.junit.Test
 import org.assertj.core.api.KotlinAssertions.assertThat
 
-class Week1Tests {
+class Day1Tests {
 
     val capCalc = CaptchaCalculator()
 

@@ -1,4 +1,4 @@
-package week3
+package day3
 
 class ManhattenGrid () {
 

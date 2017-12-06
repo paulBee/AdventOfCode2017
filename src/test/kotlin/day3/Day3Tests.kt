@@ -1,9 +1,9 @@
-package week3
+package day3
 
 import org.junit.Test
 import org.assertj.core.api.KotlinAssertions.assertThat
 
-class week3Tests {
+class Day3Tests {
 
     val manhattanDist = ManhattanDistance()
 

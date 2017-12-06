@@ -1,10 +1,10 @@
-package week5
+package day5
 
 import org.junit.Test
 import org.assertj.core.api.KotlinAssertions.assertThat
 import splitNewline
 
-class Week5Tests {
+class Day5Tests {
     val jumper = JumpInstructions()
 
     @Test

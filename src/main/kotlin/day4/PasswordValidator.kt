@@ -1,4 +1,4 @@
-package week4
+package day4
 
 import isSingleton
 import splitWhitespace

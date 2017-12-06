@@ -1,4 +1,4 @@
-package week5
+package day5
 
 class JumpInstructions {
 
@@ -26,7 +26,7 @@ class JumpInstructions {
         state.jumps = state.jumps + 1
         state.position = position + state.jumpList[position]
         state.jumpList[position] = jumpChanger(state.jumpList[position])
-        
+
         return when {
             endCondition(state) -> state.jumps
             else -> processJumps(state, jumpChanger)
