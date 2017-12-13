@@ -1,52 +1,65 @@
 package day12
 
-class PiperCheckerer {
-
-    fun calc(input: List<String>): Int {
-        val processedInput = processInput(input)
-
-        val nodes = processedInput.map { Node(it.name) }
-
-        val node0 = nodes.first { it.name == "0" }
-
-        populateLinks(nodes, node0, processedInput)
-
-        return nodes.filter { it.seenInGraph }.size
-    }
-
-    fun calc2(input: List<String>): Int {
-        val processedInput = processInput(input)
-        val nodes = processedInput.map { Node(it.name) }
-
-        var groupsFound = 0
-        while (nodes.any { !it.seenInGraph }) {
-            groupsFound++
-            val firstOfNewGroup = nodes.first { !it.seenInGraph }
-            populateLinks(nodes, firstOfNewGroup, processedInput)
+class GraphFactory(input: List<String>) {
+    private val parsedInput: List<Parsed>
+    private val graphs: MutableList<Graph> = mutableListOf()
+    private val regex = Regex("""^(\w+) <-> (.*)""")
+    init {
+        parsedInput = processInput(input)
+        while (parsedInput.any { !it.placedInGraph }) {
+            val entryNode = parsedInput.first { !it.placedInGraph }
+            buildGraphFromNode(entryNode.name)
         }
-
-        return groupsFound
     }
 
-    private fun populateLinks(nodes: List<Node>, nodeToPopulate: Node, parsedInput: List<Parsed>) {
-        val linksToNames = parsedInput.first { it.name == nodeToPopulate.name }.linksToNames
-        nodeToPopulate.seenInGraph = true
-        nodeToPopulate.linksTo.addAll(nodes.filter { linksToNames.contains(it.name)}.onEach {
-            if(!it.seenInGraph) populateLinks(nodes, it, parsedInput)
-        })
+    fun getGraphWithNode(nodeName: String): Graph =
+            graphs.first { it.getNodes().any { it.name == nodeName } }
 
+    fun getGraphs(): List<Graph> = graphs.toList()
+
+
+    private fun buildGraphFromNode(nodeName: String): Graph {
+        val graph = Graph(parsedInput, nodeName)
+        graphs.add(graph)
+        return graph
     }
+
+
+    data class Parsed(val name: String, val linksToNames: List<String>, var placedInGraph: Boolean = false)
+    data class Node(val name: String, val links: MutableList<Node> = emptyList<Node>().toMutableList())
 
     private fun processInput(unprocessedInput: List<String>): List<Parsed> =
-            unprocessedInput.map { regex.find(it)!! }.map {
+            unprocessedInput
+                    .map { regex.find(it)!! }
+                    .map {
                 val(name, links) = it.destructured
                 Parsed(name, links.split(Regex(",\\s*")))
             }
 
+    class Graph (parsedInput: List<GraphFactory.Parsed>, nodeName: String) {
+        private val nodes: MutableList<Node> = mutableListOf()
+        private val parsedInput = parsedInput
 
-    //  b <-> a,b, c
-    private val regex = Regex("""^(\w+) <-> (.*)""")
+        init {
+            buildNode(nodeName)
+        }
 
-    private data class Parsed(val name: String, val linksToNames: List<String>)
-    private data class Node(val name: String, val linksTo: MutableList<Node> = emptyList<Node>().toMutableList(), var seenInGraph: Boolean = false)
+        fun getNodes(): List<Node> = nodes.toList()
+
+
+        private fun getOrBuildNode(nodeName: String): Node {
+            return nodes.firstOrNull { it.name == nodeName } ?: buildNode(nodeName)
+        }
+
+        private fun buildNode(nodeName: String): Node {
+            val nodeInfo = parsedInput.first { it.name == nodeName }
+            nodeInfo.placedInGraph = true
+            val node = Node(nodeInfo.name)
+            nodes.add(node)
+            node.links.addAll(nodeInfo.linksToNames.map { getOrBuildNode(it) })
+            return node
+        }
+    }
 }
+
+
