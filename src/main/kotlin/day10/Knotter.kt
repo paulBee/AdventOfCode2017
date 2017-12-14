@@ -3,7 +3,7 @@ package day10
 import getWrappedIndex
 import setWrappedIndex
 
-class Knotter {
+object Knotter {
 
     fun performHash(list: MutableList<Int>, lengths: List<Int>) {
         var currentPosition = 0

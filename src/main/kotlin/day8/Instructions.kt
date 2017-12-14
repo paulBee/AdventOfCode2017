@@ -1,5 +1,7 @@
 package day8
 
+import toDigit
+
 class Instructions {
 
     var currMax = 0
@@ -31,36 +33,36 @@ class Instructions {
     }
 
     //  b inc 5 if a > 1
-    private val regex = Regex("""^(\w+) (inc|dec) (-)?(\d+) if (\w+) (>|>=|<|<=|==|!=) (-)?(\d+)""")
+    private val regex = Regex("""^(\w+) (inc|dec) (-?\d+) if (\w+) (>|>=|<|<=|==|!=) (-?\d+)""")
 
     private fun buildInstructionList(unprocessedInstructions: List<String>): List<Instruction> = unprocessedInstructions
             .onEach { println(it) }
                 .map{ regex.find(it)!! }
                 .map{
-                    val(appliedTo, incOrDec, negativeSign, incOrDecMagnitude, predicateAppliedTo, predicateOperator, predicateNegativeSign, predicateValue)= it.destructured
+                    val(appliedTo, incOrDec, incOrDecMagnitude, predicateAppliedTo, predicateOperator, predicateValue)= it.destructured
 
                     Instruction(appliedTo,
-                            buildIncrementBy(incOrDec, negativeSign, incOrDecMagnitude.toInt()),
+                            buildIncrementBy(incOrDec, incOrDecMagnitude.toDigit()),
                             predicateAppliedTo,
-                            buildPredicate(predicateOperator, predicateNegativeSign, predicateValue.toInt())
+                            buildPredicate(predicateOperator, predicateValue.toDigit())
                     )
                 }
 
-    private fun buildPredicate(predicateOperator: String, negative: String, predicateValue: Int): (Int) -> Boolean =
+    private fun buildPredicate(predicateOperator: String, predicateValue: Int): (Int) -> Boolean =
             when(predicateOperator) {
-                ">" -> {toCompare: Int -> toCompare > possibleNegate(negative, predicateValue)}
-                ">=" -> {toCompare: Int -> toCompare >= possibleNegate(negative, predicateValue)}
-                "<" -> {toCompare: Int -> toCompare < possibleNegate(negative, predicateValue)}
-                "<=" -> {toCompare: Int -> toCompare <= possibleNegate(negative, predicateValue)}
-                "==" -> {toCompare: Int -> toCompare == possibleNegate(negative, predicateValue)}
-                "!=" -> {toCompare: Int -> toCompare != possibleNegate(negative, predicateValue)}
+                ">" -> {toCompare: Int -> toCompare > predicateValue}
+                ">=" -> {toCompare: Int -> toCompare >= predicateValue}
+                "<" -> {toCompare: Int -> toCompare < predicateValue}
+                "<=" -> {toCompare: Int -> toCompare <= predicateValue}
+                "==" -> {toCompare: Int -> toCompare == predicateValue}
+                "!=" -> {toCompare: Int -> toCompare != predicateValue}
                 else -> throw IllegalArgumentException("Unrecognised predicate operator found $predicateOperator")
             }
 
-    private fun buildIncrementBy(incOrDec: String, negative: String, magnidute: Int): Int =
+    private fun buildIncrementBy(incOrDec: String, magnidute: Int): Int =
             when(incOrDec){
-                "inc" -> possibleNegate(negative, magnidute)
-                "dec" -> - possibleNegate(negative, magnidute)
+                "inc" -> magnidute
+                "dec" -> - magnidute
                 else -> throw IllegalArgumentException("Only expecting inc or dec but received $incOrDec")
             }
 
@@ -74,3 +76,4 @@ class Instructions {
 
     data class Instruction(val appliedTo: String, val incrementBy: Int, val predicateAppliedTo: String, val predicate: (Int) -> Boolean)
 }
+

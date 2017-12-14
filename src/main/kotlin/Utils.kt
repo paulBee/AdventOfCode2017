@@ -7,6 +7,13 @@ fun String.wrappedIndex(index: Int): Char = this[index % this.length]
 fun String.splitWhitespace(): List<String> = this.split(Regex("\\s+"))
 fun String.splitNewline(): List<String> = this.split("\n").filter { it.isNotEmpty() }
 
+fun String.toDigit(): Int = Regex("""(-)?(\d+)""").find(this)
+        ?.destructured
+        ?.let { when(it.component1()) {
+            "-" ->  - it.component2().toInt()
+            else -> it.component2().toInt()
+        } }
+        ?: throw IllegalStateException("attempted to convert $this to a digit")
 
 
 fun Collection<Any>.isSingleton(): Boolean = this.size == 1
