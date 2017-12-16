@@ -26,6 +26,6 @@ class DiskFragmentererTest{
 
     @Test
     fun actual2() {
-        println(DiskFragmenterer.countRegions("ugkiagan"))
+        println(DiskFragmenterer.countRegions("ugkiagan", true))
     }
 }

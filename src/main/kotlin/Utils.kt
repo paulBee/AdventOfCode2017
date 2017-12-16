@@ -36,4 +36,6 @@ fun Double.ceilOdd(): Int = let {
     }.toInt()
 }
 
+fun <T> duplicate(lengths: List<T>, repeatNumber: Int): List<T> = (1..repeatNumber).flatMap { lengths }
+
 

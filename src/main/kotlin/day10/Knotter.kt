@@ -1,5 +1,6 @@
 package day10
 
+import duplicate
 import getWrappedIndex
 import setWrappedIndex
 
@@ -46,7 +47,8 @@ object Knotter {
         return duplicate(lengths, 64)
     }
 
-    private fun duplicate(lengths: List<Int>, repeatNumber: Int): List<Int> = (1..repeatNumber).flatMap { lengths }
+
+
 
 
 

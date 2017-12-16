@@ -9,7 +9,7 @@ object DiskFragmenterer {
                 .flatMap{ it }
                 .sum()
 
-    fun countRegions(input: String): Int {
+    fun countRegions(input: String, printSolution: Boolean = false): Int {
 
         val binaryMap = convertToCoOrdsMap(BuildBinaryArray(input))
 
@@ -21,11 +21,17 @@ object DiskFragmenterer {
 
             buildGroupFromElement(binaryMap, rootOfNewGroup, groupNum)
         }
-//        (0..127).forEach { xCoord ->
-//            val rowString = (0..127).map { Pair(xCoord, it) }.map { binaryMap.get(it)!! }.map { it.second ?: 0 }.map { it.toString() }
-//            println(rowString)
-//        }
 
+        if(printSolution) {
+            val paddingSize = groupNum.toString().length + 1
+            (0..127).forEach { xCoord ->
+            (0..127).map { Pair(xCoord, it) }
+                    .map { binaryMap[it]!! }
+                    .map { it.second?.toString() ?: "." }
+                    .forEach { print(it.padStart(paddingSize/2,' ').padEnd(paddingSize, ' ')) }
+                println()
+            }
+        }
         return groupNum
     }
 
