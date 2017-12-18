@@ -38,4 +38,6 @@ fun Double.ceilOdd(): Int = let {
 
 fun <T> duplicate(lengths: List<T>, repeatNumber: Int): List<T> = (1..repeatNumber).flatMap { lengths }
 
+fun List<Int>.valueAfterValue(searchValue: Int): Int =this[this.indexOf(searchValue) + 1]
+
 
