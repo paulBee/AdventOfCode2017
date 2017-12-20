@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.19.2"
 
     testCompile 'junit:junit:4.12'
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
@@ -26,5 +27,11 @@ dependencies {
 
 task wrapper(type: Wrapper) {
     gradleVersion="4.3.1"
+}
+
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
 }
 
